@@ -1,13 +1,20 @@
+#![allow(unused)]
+
 extern crate rand;
 extern crate sfml;
 
+mod cpu;
+use self::cpu::MOS6510;
 use sfml::graphics::*;
 use sfml::window::*;
 use rand::Rng;
 
 
 fn main() {
-    let mut window = RenderWindow::new(
+
+    let c64 : MOS6510 = MOS6510::new();
+
+    let mut window = RenderWindow::new (
         (800, 600),
         "this is a title.",
         Style::TITLEBAR | Style::CLOSE,
