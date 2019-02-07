@@ -13,11 +13,12 @@ use rand::Rng;
 
 fn main() {
 
-    let c64 : MOS6510 = MOS6510::new();
+    let mut c64 : MOS6510 = MOS6510::new();
+    c64.cycle();
 
     let mut window = RenderWindow::new (
         (800, 600),
-        "this is a title.",
+        "C64 DBG",
         Style::TITLEBAR | Style::CLOSE,
         &Default::default(),
     );
@@ -27,10 +28,10 @@ fn main() {
     let mut pixels: [u8; 80 * 60 * 4] = [150; 80 * 60 * 4];
 
     let font = Font::from_file("res/C64_pro.ttf").unwrap();
-    let msg = "YAY this shit is working";
+    let msg = "Now it's in valid\nC64 colours.";
     let mut instructions = Text::new(msg, &font, 30);
     instructions.set_position((100.0, 280.0));
-    instructions.set_fill_color(&Color::WHITE);
+    instructions.set_fill_color(&Color::rgb(134, 122, 221));
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -62,8 +63,8 @@ fn main() {
         sprite.set_position((0., 0.));
         sprite.set_scale((10.0, 10.0));
 
-        window.clear(&Color::BLACK);
-        window.draw(&sprite);
+        window.clear(&Color::rgb(72, 59, 170));
+        //window.draw(&sprite);
         window.draw(&instructions);
         window.display();
     }
