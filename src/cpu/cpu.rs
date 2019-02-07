@@ -5,6 +5,8 @@
 #![allow(unused)]
 
 use super::mmu::MMU;
+use std::fs::File;
+use std::io::Read;
 
 pub struct MOS6510 {
 
@@ -39,4 +41,22 @@ impl MOS6510 {
             mmu : MMU::new(),
         }
     }
+
+    pub fn load_to_ram(&mut self, path : String, address : u16) {
+        let mut buffer : Vec<u8> = Vec::new();
+
+        // open the file
+        let mut f = File::open(&path)
+        .expect("\n Error with file loading! \n");
+
+        // read the file to rom_buffer
+        f.read_to_end(&mut buffer)
+        .expect("Error with file reading!");
+
+        // copy buffer to a pecific RAM address
+        for i in 0..buffer.len() {
+            self.mmu.write(buffer[i], address);
+        }
+
+    } // fn load_bootrom
 }

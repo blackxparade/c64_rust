@@ -7,6 +7,7 @@ mod cpu;
 use self::cpu::MOS6510;
 use sfml::graphics::*;
 use sfml::window::*;
+use sfml::window::mouse::*;
 use rand::Rng;
 
 
@@ -40,6 +41,13 @@ fn main() {
                     Key::Escape => window.close(),
                     _ => {}
                 },
+                MouseWheelScrolled { wheel, delta, .. } => match wheel {
+                    Wheel::Vertical => {
+                        if (delta > 0.0) { println!("down"); }
+                        if (delta < 0.0) { println!("up"); }
+                    },
+                    _ => {}
+                }
                 _ => {}
             }
         }
