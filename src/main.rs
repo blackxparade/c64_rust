@@ -16,6 +16,7 @@ fn main() {
     let mut c64 : MOS6510 = MOS6510::new();
     c64.cycle();
 
+    /*
     let mut window = RenderWindow::new (
         (800, 600),
         "C64 DBG",
@@ -67,5 +68,5 @@ fn main() {
         //window.draw(&sprite);
         window.draw(&instructions);
         window.display();
-    }
+    } */
 }

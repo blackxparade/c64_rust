@@ -50,6 +50,31 @@ impl MOS6510 {
             if (!self.dbg.poll()) {
                 return;
             }
+            let text : Vec<String> = vec![
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),
+                                        String::from("This is a test."),];
+            self.dbg.clear();
+            self.dbg.assemble_text(text);
             self.dbg.render();
         }
     }
