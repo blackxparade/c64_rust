@@ -75,6 +75,8 @@ impl MOS6510 {
                                         String::from("This is a test."),];
             self.dbg.clear();
             self.dbg.assemble_text(text);
+            self.mmu.randomize();
+            self.dbg.memory_map(&self.mmu.RAM);
             self.dbg.render();
         }
     }
