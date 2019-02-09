@@ -51,7 +51,7 @@ impl MOS6510 {
                 return;
             }
             let text : Vec<String> = vec![
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
+                                        //String::from("    PC    |             CPU INSTRUCTION            "),
                                         String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
                                         String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
                                         String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),

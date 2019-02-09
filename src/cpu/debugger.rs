@@ -88,14 +88,26 @@ impl Debugger {
         let mut text_background_texture = Texture::new(BG_WIDTH, BG_HEIGHT).unwrap();
         text_background_texture.update_from_pixels(&text_background, BG_WIDTH, BG_HEIGHT, 0, 0);
         let mut text_background_sprite = Sprite::with_texture(&text_background_texture);
+        let mut header_background_sprite = Sprite::with_texture(&text_background_texture);
+
+        let mut render_text_header = Text::new("    PC    |             CPU INSTRUCTION            ",
+                                               &self.font, 22);
+
+        header_background_sprite.set_position((11.0, 2.0));
+        self.dbg.draw(&header_background_sprite);
+
+        render_text_header.set_position((15.0, 5.0));
+        render_text_header.set_fill_color(&self.DARK_BLUE);
+        self.dbg.draw(&render_text_header);
+
 
         for i in 0..text.len() {
             let mut render_text = Text::new(&text[i], &self.font, 22);
-            render_text.set_position((15.0, i as f32 * 32.0 + 5.0));
+            render_text.set_position((15.0, i as f32 * 32.0 + 37.0));
 
             if (i == self.active_state as usize) {
                 render_text.set_fill_color(&self.DARK_BLUE);
-                text_background_sprite.set_position((11.0, i as f32 * 32.0 + 2.0));
+                text_background_sprite.set_position((11.0, i as f32 * 32.0 + 34.0));
                 self.dbg.draw(&text_background_sprite);
             } else {
                 render_text.set_fill_color(&self.LIGHT_BLUE);
