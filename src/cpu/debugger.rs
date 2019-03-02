@@ -8,6 +8,7 @@ use sfml::window::mouse::*;
 
 pub struct Debugger {
     dbg          : RenderWindow,
+    text         : Vec<String>,
     font         : Font,
     active_state : u8,
     line_count   : u8,
@@ -24,6 +25,7 @@ impl Debugger {
                            "C64 DBG",
                            Style::TITLEBAR | Style::CLOSE,
                            &Default::default(),),
+            text         : Vec::new(),
             font         : Font::from_file("res/C64_pro.ttf").unwrap(),
             active_state : 0,
             line_count   : 0,
@@ -71,7 +73,7 @@ impl Debugger {
         true
     }
 
-    pub fn assemble_text(&mut self, text: Vec<String>) {
+    pub fn assemble_text(&mut self, text: &Vec<String>) {
         self.line_count = text.len() as u8;
         const BG_WIDTH  : u32 = 1015;
         const BG_HEIGHT : u32 = 30;
@@ -125,16 +127,18 @@ impl Debugger {
     pub fn memory_map(&mut self, ram: &[u8]) {
 
         let mut pixels: [u8; 256 * 256 * 4] = [255; 256 * 256 * 4];
-        let light_blue = [134, 122, 221, 255];
-        let dark_blue = [72, 59, 170, 255];
 
-        // it seemed like it's faster when not using close from slice, only
-        // regular value copy to a specific array index
         for i in 0..ram.len() {
             if (ram[i] != 0) {
-                pixels[(i*4)..(i*4+4)].clone_from_slice(&light_blue);
+                pixels[i*4] = 134;
+                pixels[i*4+1] = 122;
+                pixels[i*4+2] = 221;
+                pixels[i*4+3] = 255;
             } else {
-                pixels[(i*4)..(i*4+4)].clone_from_slice(&dark_blue);
+                pixels[i*4] = 72;
+                pixels[i*4+1] = 59;
+                pixels[i*4+2] = 170;
+                pixels[i*4+3] = 255;
             }
         }
 

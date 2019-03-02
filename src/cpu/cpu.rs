@@ -6,6 +6,7 @@
 
 use super::mmu::MMU;
 use super::debugger::Debugger;
+use super::opcode::Opcode;
 use std::fs::File;
 use std::io::Read;
 
@@ -29,6 +30,7 @@ pub struct MOS6510 {
 
      pub mmu : MMU,
      pub dbg : Debugger,
+     pub opc : Opcode,
 }
 
 impl MOS6510 {
@@ -42,67 +44,25 @@ impl MOS6510 {
             P   : 0b0010_0000,
             mmu : MMU::new(),
             dbg : Debugger::new(),
+            opc : Opcode::new(),
         }
     }
 
     pub fn cycle(&mut self) {
         loop {
-            if (!self.dbg.poll()) {
-                return;
-            }
-            let text : Vec<String> = vec![
-                                        //String::from("    PC    |             CPU INSTRUCTION            "),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"),
-                                        String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $")];
+            if (!self.dbg.poll()) { return; }
+
+            // let's do the trusty old fetch-decode-execute steps
+
+
+
+            // debugger initialization
+            // it should be at the end of a cycle
+            let text : Vec<String> =
+                vec![String::from("This is a test. , : / ( ) [ ] { } = ? ! - + # ' % $"); 30];
+
             self.dbg.clear();
-            self.dbg.assemble_text(text);
+            self.dbg.assemble_text(&self.opc.recent_opc);
             self.mmu.randomize();
             self.dbg.memory_map(&self.mmu.RAM);
             self.dbg.render();
